@@ -1,0 +1,8 @@
+Test Case,Expected Decision,Rule That Fires,Full Name,NRIC,Date of Birth,Email,Account Type,Employment Status,Annual Income,Initial Deposit
+TC1 - Happy path,APPROVED,Passes all four rules,Marcus Ng Jun Hao,S9512345F,1995-03-18,<your-email>,Savings,Employed,58000,1000
+TC2 - Existing customer,DUPLICATE,Rule 1 duplicate check,Tan Wei Ming,S8412345D,1984-07-02,<your-email>,Current,Employed,72000,5000
+TC3 - Under 18,REJECTED,Rule 2 age check,Chloe Lim Xin Yi,T1045678M,2010-05-14,<your-email>,Savings,Student,0,500
+TC4 - Income too low,REJECTED,Rule 3 Fixed Deposit needs income >= 30000,Priya Devi,S9823456G,1998-11-09,<your-email>,Fixed Deposit,Student,12000,10000
+TC5 - Not employed,REJECTED,Rule 3 Current needs Employed or Self-Employed,Alvin Chua Kok Wei,S8734567H,1987-01-25,<your-email>,Current,Unemployed,0,3000
+TC6 - Deposit below minimum,REJECTED,Rule 4 Savings needs SGD 500,Siti Nurhaliza Binte Karim,S9356789P,1993-09-21,<your-email>,Savings,Employed,54000,100
+TC7 - Messy casing and spacing,APPROVED,Compose must trim and uppercase before the lookup,  daniel wong  , s9012345j ,1990-06-30,<your-email>,Savings,Employed,45000,500

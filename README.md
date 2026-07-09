@@ -61,7 +61,28 @@ ingestion embedding model  ==  retrieval embedding model  ==  the index's dimens
 
 ---
 
-## Prerequisites
+## Two platforms, same three ideas
+
+The course ships in two flavours. The scenarios, the design lessons and the assessment are identical;
+only the tooling differs. Pick whichever your learners' organisation actually uses.
+
+| | [`labs/`](labs/) | [`labs_copilotstudio/`](labs_copilotstudio/) |
+|---|---|---|
+| Platform | **n8n** (5 labs) | **Power Automate + Copilot Studio** (3 labs, one per LU) |
+| Agent | AI Agent node + tools | AI Builder prompt · Copilot Studio agent |
+| Front door | Webhook + your own web page | Microsoft Forms on a SharePoint page or Teams tab |
+| Data | Google Sheets | Excel Online tables |
+| Email | Gmail | Outlook |
+| Human gate | Gmail *Send and Wait* | **Approvals** in Teams |
+| Knowledge | Simple Vector Store · Pinecone / Supabase / Qdrant | Copilot Studio knowledge · Azure AI Search |
+| Learner Guide | `LG_..._n8n.docx` | `LG_..._copilotstudio.docx` |
+
+The Microsoft set requires no code, no hosting and no vector database — a Microsoft 365 account with an
+AI Builder trial is enough.
+
+---
+
+## Prerequisites (n8n labs)
 
 - An n8n instance — [n8n Cloud](https://n8n.io) free trial, or locally via Docker.
 - A **Google Gemini API key** from [Google AI Studio](https://aistudio.google.com/app/apikey).
@@ -97,14 +118,18 @@ The URL is stored in `localStorage`.
 
 ```
 .
-├── labs/
+├── labs/                                         # n8n
 │   ├── lu1-activity1-retail-banking-onboarding/   # Form Trigger → AI Agent → Sheets → Gmail
 │   ├── lu1-activity1b-onboarding-website/         # Webhook → same agent → JSON → web page
 │   ├── lu2-activity2-client-rapport/              # Agent → human approval gate → send or rewrite
 │   ├── lu3-activity3-simple-vector-store/         # RAG on n8n's built-in store (+ 20 brochures)
 │   └── lu3-activity3b-external-vector-store/      # RAG on Pinecone / Supabase / Qdrant
-├── Building AI Agents for Work Automation (SF).pptx   # Trainer slide deck
-├── LG_Building_AI_Agents_for_Work_Automation_SF_n8n.docx   # Learner Guide
+├── labs_copilotstudio/                           # Power Automate + Copilot Studio
+│   ├── lu1-activity1-retail-banking-onboarding/   # Forms → AI Builder → Excel → Outlook
+│   ├── lu2-activity2-client-rapport/              # AI Builder → Approvals in Teams → send or rewrite
+│   └── lu3-activity3-customer-care/               # Copilot Studio agent grounded in 20 brochures
+├── Building AI Agents for Work Automation (SF).pptx        # Trainer slide deck (platform-neutral)
+├── LG_..._SF_n8n.docx / LG_..._SF_copilotstudio.docx        # Learner Guide, one per platform
 └── TG_Building_AI_Agents_for_Work_Automation_SF.docx       # Trainer Guide
 ```
 

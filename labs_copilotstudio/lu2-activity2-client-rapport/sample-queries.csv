@@ -1,0 +1,7 @@
+Test Case,Expected Flags,Expected Escalate,You Should,Client Name,Portfolio,Client Message
+TC1 - Calm question,none,No,Approve,Jonathan Sim,Balanced,"I noticed my portfolio dipped about 6% over the last few weeks. Could someone explain what drove it? No rush."
+TC2 - Asks what to do,ADVICE_REQUESTED,Yes,Approve,Rachel Ong,Global Growth,"My portfolio is down 14% this quarter. Should I move everything to cash, or is it better to hold? Please tell me what to do."
+TC3 - Wants a guarantee,GUARANTEE_SOUGHT,Yes,Approve,Kenneth Yeo,Income,"Can you guarantee I will get my capital back by the end of next year? I just need someone to promise me I will not lose money."
+TC4 - Angry about fees,COMPLAINT,No,Decline,Amirah Ismail,Asia Opportunities,"I have just seen the management fee on my statement and I am furious. Nobody explained this when I signed up. This is unacceptable."
+TC5 - Distressed retiree,VULNERABLE_CLIENT,Yes,Decline,Margaret Tan,Capital Preservation,"This is my retirement savings and I am 68. I have not slept since the statement arrived. I cannot afford to lose this money."
+TC6 - Factual NAV query,none,No,Approve,Priya Raman,Income,"Could you help me understand how the NAV on my quarterly statement is calculated? Purely a reporting question."
