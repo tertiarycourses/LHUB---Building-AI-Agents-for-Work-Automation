@@ -1,0 +1,804 @@
+{
+  "name": "LU1 Activity 1b — Marina Trust Bank Onboarding (Website + Webhook)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "marina-trust-onboarding",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -880,
+        0
+      ],
+      "id": "b1000000-0001-4000-8000-000000000001",
+      "name": "Onboarding Webhook",
+      "webhookId": "9f3c1a5e-7d24-4b8f-a6c1-55ee66ff77aa"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e1000000-0001-4000-8000-000000000011",
+              "name": "applicationId",
+              "value": "=APP-{{ $now.format('yyyyLLdd') }}-{{ $execution.id }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000012",
+              "name": "fullName",
+              "value": "={{ $json.body.fullName.trim().toUpperCase() }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000013",
+              "name": "nric",
+              "value": "={{ $json.body.nric.trim().toUpperCase() }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000014",
+              "name": "dateOfBirth",
+              "value": "={{ $json.body.dateOfBirth }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000015",
+              "name": "age",
+              "value": "={{ Math.floor($now.diff(DateTime.fromISO($json.body.dateOfBirth), 'years').years) }}",
+              "type": "number"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000016",
+              "name": "nationality",
+              "value": "={{ $json.body.nationality }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000017",
+              "name": "residencyStatus",
+              "value": "={{ $json.body.residencyStatus }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000018",
+              "name": "email",
+              "value": "={{ $json.body.email.trim().toLowerCase() }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000019",
+              "name": "mobile",
+              "value": "={{ $json.body.mobile.trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000020",
+              "name": "address",
+              "value": "={{ $json.body.address.trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000021",
+              "name": "postalCode",
+              "value": "={{ $json.body.postalCode.trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000022",
+              "name": "accountType",
+              "value": "={{ $json.body.accountType }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000023",
+              "name": "employmentStatus",
+              "value": "={{ $json.body.employmentStatus }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000024",
+              "name": "occupation",
+              "value": "={{ $json.body.occupation }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000025",
+              "name": "employer",
+              "value": "={{ ($json.body.employer || '').trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000026",
+              "name": "annualIncome",
+              "value": "={{ Number($json.body.annualIncome) }}",
+              "type": "number"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000027",
+              "name": "sourceOfFunds",
+              "value": "={{ $json.body.sourceOfFunds }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000028",
+              "name": "purposeOfAccount",
+              "value": "={{ $json.body.purposeOfAccount }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000029",
+              "name": "initialDeposit",
+              "value": "={{ Number($json.body.initialDeposit) }}",
+              "type": "number"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000030",
+              "name": "pep",
+              "value": "={{ $json.body.pep }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0001-4000-8000-000000000031",
+              "name": "foreignTaxResident",
+              "value": "={{ $json.body.foreignTaxResident }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -656,
+        0
+      ],
+      "id": "a1000000-0002-4000-8000-000000000002",
+      "name": "Normalise Application"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=New customer onboarding application received.\n\nApplication ID: {{ $json.applicationId }}\nFull Name: {{ $json.fullName }}\nNRIC / FIN: {{ $json.nric }}\nDate of Birth: {{ $json.dateOfBirth }}\nAge: {{ $json.age }}\nNationality: {{ $json.nationality }}\nResidency Status: {{ $json.residencyStatus }}\nEmail: {{ $json.email }}\nMobile: {{ $json.mobile }}\nAccount Type: {{ $json.accountType }}\nEmployment Status: {{ $json.employmentStatus }}\nOccupation / Industry: {{ $json.occupation }}\nEmployer: {{ $json.employer }}\nAnnual Income (SGD): {{ $json.annualIncome }}\nSource of Funds: {{ $json.sourceOfFunds }}\nPurpose of Account: {{ $json.purposeOfAccount }}\nInitial Deposit (SGD): {{ $json.initialDeposit }}\nPEP: {{ $json.pep }}\nTax Resident Outside Singapore: {{ $json.foreignTaxResident }}\n\nProcess this application according to your onboarding rules.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are the Customer Onboarding Assistant for a Singapore retail bank. You process new account applications end-to-end and you must follow the bank's onboarding rules exactly, in the order given.\n\n## Your tools\n1. `check_duplicate_customer` — look up the Customers sheet by NRIC. Returns the matching row if the customer already exists, or an empty result if they do not.\n2. `create_customer_record` — append a new row to the Customers sheet. Only call this for an applicant you have decided to APPROVE.\n3. `send_confirmation_email` — send exactly one email to the applicant. You supply only `subject` and `body_html`. The bank's letterhead, the greeting (\"Dear <name>,\"), the reference block (application reference, masked NRIC, account applied for), the sign-off and the no-reply footer are added automatically. Never write those yourself, and never put the NRIC in the body.\n\n## Definitions\n- \"Gainfully employed\" means Employment Status is one of: Employed, Self-Employed, Contract, Part-Time.\n- Every other status (Student, National Service, Homemaker, Retired, Unemployed) is NOT gainfully employed.\n- \"High-risk source of funds\" means Source of Funds is one of: Gift or Inheritance, Cryptocurrency Proceeds, Other.\n\n## Onboarding rules — evaluate in this order and stop at the first rule that fires\n\nSTEP 1 — DUPLICATE CHECK (always first, before anything else)\nCall `check_duplicate_customer` with the applicant's NRIC.\nIf a record is returned, the applicant is an EXISTING customer:\n  decision = \"DUPLICATE\". Do NOT create a record. Email them to say an account already exists under this NRIC and that they should visit a branch to add a new account. Stop.\n\nSTEP 2 — AGE\nIf Age is below 18:\n  decision = \"REJECTED\", riskFlags = [\"MINOR\"]. Do NOT create a record. Email them to say a junior account must be opened at a branch together with a parent or legal guardian. Stop.\n\nSTEP 3 — KYC / AML SCREENING\nRaise a flag for each of these that is true:\n  - PEP is \"Yes\"                              -> flag \"PEP\"\n  - Tax Resident Outside Singapore is \"Yes\"   -> flag \"CRS_FATCA\"\n  - Source of Funds is high-risk              -> flag \"SOURCE_OF_FUNDS\"\nIf one or more flags were raised:\n  decision = \"REVIEW\", riskFlags = the flags you raised. Do NOT create a record. Email them to say the application has been referred to the bank's compliance team for enhanced due diligence and that an officer will contact them within 5 working days. Stop.\n\nSTEP 4 — ACCOUNT ELIGIBILITY\nApply only the rule for the account type the applicant actually requested:\n  - Savings          — no income or employment requirement.\n  - Joint Savings    — no income or employment requirement.\n  - Student Account  — Employment Status must be exactly \"Student\".\n  - Current          — applicant must be gainfully employed.\n  - Fixed Deposit    — Annual Income must be at least SGD 30,000.\n  - Multi-Currency   — Annual Income must be at least SGD 60,000 AND applicant must be gainfully employed.\nIf the applicant fails this rule:\n  decision = \"REJECTED\", riskFlags = []. Do NOT create a record. Email them, name the exact criterion that was not met, and suggest a Savings account instead. Stop.\n\nSTEP 5 — MINIMUM INITIAL DEPOSIT\n  - Savings SGD 500 | Joint Savings SGD 1,000 | Student Account SGD 0 | Current SGD 3,000 | Fixed Deposit SGD 10,000 | Multi-Currency SGD 5,000\nIf Initial Deposit is below the minimum for the requested account type:\n  decision = \"REJECTED\", riskFlags = []. Do NOT create a record. Email them, state the minimum for that account type, and invite them to reapply. Stop.\n\nSTEP 6 — APPROVAL\ndecision = \"APPROVED\", riskFlags = [].\nCall `create_customer_record`, then call `send_confirmation_email` to welcome them and confirm the account type and initial deposit.\nNever call `create_customer_record` before STEP 1 has returned a clean result.\n\n## Constraints\n- Never invent an NRIC, email address, income figure, deposit amount or account number.\n- Send exactly one email per application — never two.\n- Judge the applicant only against the rule for the account type they asked for. Never approve them into a different account type.\n- `body_html` is 2 to 3 short paragraphs, each wrapped in <p style=\"margin:0 0 16px;\">. Under 120 words in total.\n- Write as a Singapore bank writes: courteous, factual, plain English. No exclamation marks, no marketing language, no emoji. State the decision in the first sentence, give the exact reason, then say what happens next.\n- Never put the NRIC, an account number or any password in the email body.\n\n## Output\nReturn ONLY a JSON object with keys: applicationId, decision, reason, riskFlags, emailSent.\n`decision` is one of \"APPROVED\", \"REJECTED\", \"DUPLICATE\", \"REVIEW\". `riskFlags` is an array of strings (empty when none)."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -400,
+        0
+      ],
+      "id": "a1000000-0003-4000-8000-000000000003",
+      "name": "Onboarding AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -480,
+        240
+      ],
+      "id": "a1000000-0004-4000-8000-000000000004",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "EKoniIk8TbTx3Td4",
+          "name": "Gemini API Key (n8n TMS)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"applicationId\": \"APP-20260709-1042\",\n  \"decision\": \"APPROVED\",\n  \"reason\": \"No existing record for this NRIC. Applicant is 34, cleared KYC screening, is gainfully employed and meets the SGD 3,000 minimum deposit for a Current account.\",\n  \"riskFlags\": [\n    \"PEP\"\n  ],\n  \"emailSent\": true\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -176,
+        240
+      ],
+      "id": "a1000000-0008-4000-8000-000000000008",
+      "name": "Decision Parser"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Look up the bank's Customers sheet by NRIC to find out whether this person is already a customer. Returns the existing customer row if found. An EMPTY result means the NRIC is not on file and the applicant is NOT an existing customer. Always call this before creating a customer.",
+        "documentId": {
+          "__rl": true,
+          "value": "REPLACE_WITH_YOUR_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Retail Banking Onboarding"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Customers"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "NRIC",
+              "lookupValue": "={{ $fromAI('nric', 'The applicant NRIC or FIN, trimmed and in uppercase, e.g. S1234567A', 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -352,
+        240
+      ],
+      "id": "a1000000-0005-4000-8000-000000000005",
+      "name": "check_duplicate_customer",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mHeOp62hZBqRUnT6",
+          "name": "Google Sheets (Sales Account)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Create the new customer by appending a row to the Customers sheet. This tool takes NO arguments — it reads the applicant's verified details straight from the submitted form. Call it only when the applicant has passed the duplicate check and every eligibility rule.",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "REPLACE_WITH_YOUR_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Retail Banking Onboarding"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Customers"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "NRIC": "={{ $('Normalise Application').first().json.nric }}",
+            "Full Name": "={{ $('Normalise Application').first().json.fullName }}",
+            "Date of Birth": "={{ $('Normalise Application').first().json.dateOfBirth }}",
+            "Age": "={{ $('Normalise Application').first().json.age }}",
+            "Nationality": "={{ $('Normalise Application').first().json.nationality }}",
+            "Residency Status": "={{ $('Normalise Application').first().json.residencyStatus }}",
+            "Email": "={{ $('Normalise Application').first().json.email }}",
+            "Mobile": "={{ $('Normalise Application').first().json.mobile }}",
+            "Residential Address": "={{ $('Normalise Application').first().json.address }}",
+            "Postal Code": "={{ $('Normalise Application').first().json.postalCode }}",
+            "Account Type": "={{ $('Normalise Application').first().json.accountType }}",
+            "Employment Status": "={{ $('Normalise Application').first().json.employmentStatus }}",
+            "Occupation": "={{ $('Normalise Application').first().json.occupation }}",
+            "Employer": "={{ $('Normalise Application').first().json.employer }}",
+            "Annual Income": "={{ $('Normalise Application').first().json.annualIncome }}",
+            "Source of Funds": "={{ $('Normalise Application').first().json.sourceOfFunds }}",
+            "Purpose of Account": "={{ $('Normalise Application').first().json.purposeOfAccount }}",
+            "Initial Deposit": "={{ $('Normalise Application').first().json.initialDeposit }}",
+            "PEP": "={{ $('Normalise Application').first().json.pep }}",
+            "Foreign Tax Resident": "={{ $('Normalise Application').first().json.foreignTaxResident }}",
+            "Onboarded On": "={{ $now.format('yyyy-LL-dd') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "NRIC",
+              "displayName": "NRIC",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date of Birth",
+              "displayName": "Date of Birth",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Age",
+              "displayName": "Age",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nationality",
+              "displayName": "Nationality",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Residency Status",
+              "displayName": "Residency Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mobile",
+              "displayName": "Mobile",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Residential Address",
+              "displayName": "Residential Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Postal Code",
+              "displayName": "Postal Code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Account Type",
+              "displayName": "Account Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Employment Status",
+              "displayName": "Employment Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Occupation",
+              "displayName": "Occupation",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Employer",
+              "displayName": "Employer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Annual Income",
+              "displayName": "Annual Income",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Source of Funds",
+              "displayName": "Source of Funds",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Purpose of Account",
+              "displayName": "Purpose of Account",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Initial Deposit",
+              "displayName": "Initial Deposit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "PEP",
+              "displayName": "PEP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Foreign Tax Resident",
+              "displayName": "Foreign Tax Resident",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Onboarded On",
+              "displayName": "Onboarded On",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -224,
+        240
+      ],
+      "id": "a1000000-0006-4000-8000-000000000006",
+      "name": "create_customer_record",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mHeOp62hZBqRUnT6",
+          "name": "Google Sheets (Sales Account)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Send one email to the applicant telling them the outcome of their application. You supply only the subject line and the body paragraphs. The recipient address, the bank's letterhead, the greeting, the sign-off and the no-reply footer are added automatically and cannot be changed.",
+        "sendTo": "={{ $('Normalise Application').first().json.email }}",
+        "subject": "={{ $fromAI('subject', 'A short, factual email subject line, e.g. \"Your Marina Trust Bank account application (APP-20260710-42)\". No marketing language, no exclamation marks.', 'string') }}",
+        "emailType": "html",
+        "message": "=<!DOCTYPE html>\n<html>\n<body style=\"margin:0;padding:0;background:#f6f9fc;\">\n  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f6f9fc;padding:32px 12px;\">\n    <tr><td align=\"center\">\n      <table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:600px;background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;font-family:Arial,Helvetica,sans-serif;\">\n\n        <tr><td style=\"background:#0b2a4a;padding:24px 32px;\">\n          <span style=\"display:inline-block;width:36px;height:36px;line-height:36px;text-align:center;background:#ffffff;color:#0b2a4a;font-weight:bold;font-size:14px;border-radius:6px;\">MT</span>\n          <span style=\"color:#ffffff;font-size:17px;font-weight:bold;margin-left:12px;vertical-align:middle;\">Marina Trust Bank</span>\n          <div style=\"color:#8fb3d0;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-top:6px;\">Personal Banking &middot; Singapore</div>\n        </td></tr>\n\n        <tr><td style=\"padding:32px;color:#1b2733;font-size:15px;line-height:1.65;\">\n          <p style=\"margin:0 0 18px;\">Dear {{ $('Normalise Application').first().json.fullName }},</p>\n\n          {{ $fromAI('body_html', 'The body of the letter: 2 to 3 short paragraphs wrapped in <p style=\"margin:0 0 16px;\"> tags. State the decision plainly, give the exact reason, and say what happens next. Under 120 words. Professional and courteous. Do NOT add a greeting, a sign-off, the reference number, or the NRIC — those are added automatically.', 'string') }}\n\n          <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"margin:26px 0;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;\">\n            <tr>\n              <td style=\"padding:14px 0;font-size:13px;color:#5b6b7b;width:45%;\">Application reference</td>\n              <td style=\"padding:14px 0;font-size:13px;color:#1b2733;font-weight:bold;\">{{ $('Normalise Application').first().json.applicationId }}</td>\n            </tr>\n            <tr>\n              <td style=\"padding:0 0 14px;font-size:13px;color:#5b6b7b;\">Identity document</td>\n              <td style=\"padding:0 0 14px;font-size:13px;color:#1b2733;font-weight:bold;\">&bull;&bull;&bull;&bull;&bull;{{ $('Normalise Application').first().json.nric.slice(-4) }}</td>\n            </tr>\n            <tr>\n              <td style=\"padding:0 0 14px;font-size:13px;color:#5b6b7b;\">Account applied for</td>\n              <td style=\"padding:0 0 14px;font-size:13px;color:#1b2733;font-weight:bold;\">{{ $('Normalise Application').first().json.accountType }}</td>\n            </tr>\n          </table>\n\n          <p style=\"margin:0 0 4px;\">Yours sincerely,</p>\n          <p style=\"margin:0;font-weight:bold;\">Customer Onboarding Team</p>\n          <p style=\"margin:2px 0 0;color:#5b6b7b;font-size:13px;\">Marina Trust Bank, Singapore</p>\n        </td></tr>\n\n        <tr><td style=\"background:#f6f9fc;border-top:1px solid #e2e8f0;padding:22px 32px;color:#5b6b7b;font-size:11.5px;line-height:1.6;\">\n          <p style=\"margin:0 0 8px;\"><strong>This is an automated message. Please do not reply to this email</strong> &mdash; replies to this address are not monitored. To speak to us, call +65 6800 1234 or visit any Marina Trust Bank branch.</p>\n          <p style=\"margin:0 0 8px;\">This email and any attachment are confidential and intended solely for the addressee. If you have received it in error, please delete it and notify us immediately. Marina Trust Bank will never ask you for your PIN, password or One-Time Password by email.</p>\n          <p style=\"margin:0;color:#8b98a5;\">Marina Trust Bank is a fictitious institution created for the NTUC LearningHub course &ldquo;Building AI Agents for Work Automation&rdquo;. No banking service is offered and no real account is opened.</p>\n        </td></tr>\n\n      </table>\n    </td></tr>\n  </table>\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        240
+      ],
+      "id": "a1000000-0007-4000-8000-000000000007",
+      "name": "send_confirmation_email",
+      "webhookId": "d2e8b7c3-1a4f-4b62-9e3d-44dd55ee66ff",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "MTzer4MNXRwyE36l",
+          "name": "Gmail OAuth (Sales Account)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "REPLACE_WITH_YOUR_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Retail Banking Onboarding"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Onboarding_Log",
+          "mode": "list",
+          "cachedResultName": "Onboarding_Log"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ $now.toISO() }}",
+            "Application ID": "={{ $json.output.applicationId }}",
+            "NRIC": "={{ $('Normalise Application').item.json.nric }}",
+            "Full Name": "={{ $('Normalise Application').item.json.fullName }}",
+            "Account Type": "={{ $('Normalise Application').item.json.accountType }}",
+            "Decision": "={{ $json.output.decision }}",
+            "Reason": "={{ $json.output.reason }}",
+            "Risk Flags": "={{ ($json.output.riskFlags || []).join(', ') }}",
+            "Email Sent": "={{ $json.output.emailSent }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Application ID",
+              "displayName": "Application ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "NRIC",
+              "displayName": "NRIC",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Account Type",
+              "displayName": "Account Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Decision",
+              "displayName": "Decision",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reason",
+              "displayName": "Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Risk Flags",
+              "displayName": "Risk Flags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email Sent",
+              "displayName": "Email Sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -48,
+        0
+      ],
+      "id": "a1000000-0009-4000-8000-000000000009",
+      "name": "Log Decision",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mHeOp62hZBqRUnT6",
+          "name": "Google Sheets (Sales Account)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($('Onboarding AI Agent').item.json.output) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        176,
+        0
+      ],
+      "id": "b1000000-0010-4000-8000-000000000010",
+      "name": "Respond to Website"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Onboarding Webhook": {
+      "main": [
+        [
+          {
+            "node": "Normalise Application",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalise Application": {
+      "main": [
+        [
+          {
+            "node": "Onboarding AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Onboarding AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Log Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Decision": {
+      "main": [
+        [
+          {
+            "node": "Respond to Website",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Onboarding AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decision Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Onboarding AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_duplicate_customer": {
+      "ai_tool": [
+        [
+          {
+            "node": "Onboarding AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create_customer_record": {
+      "ai_tool": [
+        [
+          {
+            "node": "Onboarding AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send_confirmation_email": {
+      "ai_tool": [
+        [
+          {
+            "node": "Onboarding AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c8d2f3a1-4e5b-4c6d-9f70-1a2b3c4d5e6f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d03c6bed3240b308b4de832c94327c52a87e08eced8e5ff6ba01d3ae6a3aa507"
+  },
+  "nodeGroups": [],
+  "id": "LU1Activity1bWeb",
+  "tags": []
+}

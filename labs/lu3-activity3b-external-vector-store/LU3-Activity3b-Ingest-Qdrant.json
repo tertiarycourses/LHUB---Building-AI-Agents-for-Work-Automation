@@ -1,0 +1,263 @@
+{
+  "name": "LU3 Activity 3b — Ingest Brochures (Qdrant)",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        240
+      ],
+      "id": "c1111111-1111-4111-8111-111111111111",
+      "name": "When clicking 'Execute workflow'"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "",
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "REPLACE_WITH_DRIVE_FOLDER_ID",
+            "mode": "list",
+            "cachedResultName": "Course Brochures",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/REPLACE_WITH_DRIVE_FOLDER_ID"
+          }
+        },
+        "options": {
+          "returnAll": true,
+          "fields": [
+            "id",
+            "name",
+            "mimeType"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -500,
+        240
+      ],
+      "id": "c2222222-2222-4222-8222-222222222222",
+      "name": "List Brochures in Folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "REPLACE_GDRIVE_CRED",
+          "name": "Google Drive OAuth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -280,
+        240
+      ],
+      "id": "c3333333-3333-4333-8333-333333333333",
+      "name": "Download Each Brochure",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "REPLACE_GDRIVE_CRED",
+          "name": "Google Drive OAuth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "course-brochures",
+          "mode": "list",
+          "cachedResultName": "course-brochures"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.3,
+      "position": [
+        -20,
+        200
+      ],
+      "id": "c4444444-4444-4444-8444-444444444444",
+      "name": "Qdrant Vector Store (Insert)",
+      "credentials": {
+        "qdrantApi": {
+          "id": "REPLACE_QDRANT_CRED",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -100,
+        440
+      ],
+      "id": "c5555555-5555-4555-8555-555555555555",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "REPLACE_OPENAI_CRED",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "source",
+                "value": "={{ $('Download Each Brochure').item.json.name }}"
+              },
+              {
+                "name": "file_id",
+                "value": "={{ $('Download Each Brochure').item.json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        120,
+        440
+      ],
+      "id": "c6666666-6666-4666-8666-666666666666",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "chunkSize": 1000,
+        "chunkOverlap": 150,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        180,
+        640
+      ],
+      "id": "c7777777-7777-4777-8777-777777777777",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "content": "## Manual ingestion → Qdrant\n\n1. Upload the 20 brochures to a Google Drive folder.\n2. Set the folder ID in **List Brochures in Folder**.\n3. Pick your Google Drive, Qdrant & OpenAI credentials.\n4. In Qdrant, create a collection named `course-brochures` with **size 1536** and distance **Cosine** (see LEARNER-GUIDE.md). n8n can also auto-create it on first insert.\n5. Click **Execute workflow** to embed & upsert all brochures.",
+        "height": 300,
+        "width": 380,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        -140
+      ],
+      "id": "c8888888-8888-4888-8888-888888888888",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking 'Execute workflow'": {
+      "main": [
+        [
+          {
+            "node": "List Brochures in Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Brochures in Folder": {
+      "main": [
+        [
+          {
+            "node": "Download Each Brochure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Each Brochure": {
+      "main": [
+        [
+          {
+            "node": "Qdrant Vector Store (Insert)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store (Insert)",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Qdrant Vector Store (Insert)",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "meta": {
+    "templatecredsSetupCompleted": false
+  },
+  "tags": [
+    {
+      "name": "RAG Ingestion"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+# ---------------------------------------------------------------------------
+# Secrets — NEVER commit
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets.json
+id_rsa
+id_ed25519
+.netrc
+.npmrc
+
+# ---------------------------------------------------------------------------
+# WSQ assessment materials (confidential — question papers and answer keys)
+# ---------------------------------------------------------------------------
+/assessment/
+/assessment\ /
+AP_*.docx
+CP_*.xlsx
+reference/assessment/
+
+# Local reference copies of other courses' courseware — not part of this repo
+reference/
+
+# ---------------------------------------------------------------------------
+# OS / editor / tooling noise
+# ---------------------------------------------------------------------------
+.DS_Store
+~$*
+*.tmp
+.playwright-mcp/
+1b-result-review.png
+1b-website-full.png
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node
+node_modules/

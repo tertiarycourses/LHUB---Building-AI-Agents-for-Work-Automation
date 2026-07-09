@@ -1,0 +1,248 @@
+{
+  "name": "LU3 Activity 3 — Ingest Brochures (Simple Vector Store)",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        0
+      ],
+      "id": "f3000000-0001-4000-8000-000000000001",
+      "name": "When clicking 'Execute workflow'"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "",
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1tBBELUsZGzrlK4jXNp_EAt7owmRYEwOL",
+            "mode": "list",
+            "cachedResultName": "brochures",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1tBBELUsZGzrlK4jXNp_EAt7owmRYEwOL"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -640,
+        0
+      ],
+      "id": "f3000000-0002-4000-8000-000000000002",
+      "name": "List Brochures in Folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "1OavGmjBWXAfi1BN",
+          "name": "Google Drive OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -420,
+        0
+      ],
+      "id": "f3000000-0003-4000-8000-000000000003",
+      "name": "Download Each Brochure",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "1OavGmjBWXAfi1BN",
+          "name": "Google Drive OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "memoryKey": {
+          "__rl": true,
+          "value": "cookbake_brochures",
+          "mode": "list",
+          "cachedResultName": "cookbake_brochures"
+        },
+        "clearStore": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        -180,
+        0
+      ],
+      "id": "f3000000-0004-4000-8000-000000000004",
+      "name": "Simple Vector Store (Insert)"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-embedding-001"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "EKoniIk8TbTx3Td4",
+          "name": "Gemini API Key (n8n TMS)"
+        }
+      },
+      "id": "f3000000-0005-4000-8000-000000000005",
+      "position": [
+        -300,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "source",
+                "value": "={{ $('Download Each Brochure').item.json.name }}"
+              },
+              {
+                "name": "file_id",
+                "value": "={{ $('Download Each Brochure').item.json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -100,
+        220
+      ],
+      "id": "f3000000-0006-4000-8000-000000000006",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "chunkSize": 4000,
+        "chunkOverlap": 0,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        440
+      ],
+      "id": "f3000000-0007-4000-8000-000000000007",
+      "name": "Whole-Brochure Splitter"
+    },
+    {
+      "parameters": {
+        "content": "## Activity 3 — Ingest into the built-in Simple Vector Store\n\nRun this ONCE, by clicking Execute workflow.\n\n1. Point **List Brochures in Folder** at your own Google Drive folder of 20 brochures.\n2. Change the **memoryKey** on Simple Vector Store to `cookbake_<your-name>` so you do not collide with the rest of the class on the shared n8n instance.\n3. Make the **same** change to the agent workflow's Query Data Tool.\n\n**Clear Store is ON**, so re-running replaces the contents rather than duplicating them.\n\n⚠️ The Simple Vector Store lives in n8n's memory. It is emptied when n8n restarts. That is not a bug — it is the reason Activity 3b exists.",
+        "height": 380,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        180
+      ],
+      "id": "f3000000-0008-4000-8000-000000000008",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking 'Execute workflow'": {
+      "main": [
+        [
+          {
+            "node": "List Brochures in Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Brochures in Folder": {
+      "main": [
+        [
+          {
+            "node": "Download Each Brochure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Each Brochure": {
+      "main": [
+        [
+          {
+            "node": "Simple Vector Store (Insert)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store (Insert)",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Simple Vector Store (Insert)",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Whole-Brochure Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a0000001-0000-4000-8000-000000000001",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d03c6bed3240b308b4de832c94327c52a87e08eced8e5ff6ba01d3ae6a3aa507"
+  },
+  "nodeGroups": [],
+  "id": "LU3Act3IngestSimple",
+  "tags": []
+}

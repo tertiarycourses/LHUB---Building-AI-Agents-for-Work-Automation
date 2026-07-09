@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marina Trust Bank — Open an Account</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#">
+      <span class="brand-mark">MT</span>
+      <span class="brand-text">
+        <strong>Marina Trust Bank</strong>
+        <em>Singapore</em>
+      </span>
+    </a>
+    <nav class="nav">
+      <a href="#process">How it works</a>
+      <a href="#accounts">Accounts</a>
+      <a href="#apply" class="nav-cta">Open an account</a>
+    </nav>
+  </div>
+</header>
+
+<div class="training-banner">
+  <div class="wrap">
+    <strong>Training environment.</strong>
+    Marina Trust Bank is a fictitious bank used for this lab. Do not enter a real NRIC, address or
+    email belonging to anyone other than yourself.
+  </div>
+</div>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <p class="eyebrow">Personal Banking</p>
+      <h1>Open your account in minutes, not days.</h1>
+      <p class="lede">
+        Submit one form. Our onboarding assistant checks your details against our customer records,
+        runs the required KYC screening, and gives you a decision on the spot — no branch visit,
+        no paperwork queue.
+      </p>
+      <a href="#apply" class="btn btn-primary btn-lg">Start your application</a>
+      <p class="hero-note">Takes about 3 minutes · Decision shown immediately</p>
+    </div>
+    <div class="hero-card" aria-hidden="true">
+      <div class="hero-card-row"><span>Application received</span><i class="tick"></i></div>
+      <div class="hero-card-row"><span>Existing customer check</span><i class="tick"></i></div>
+      <div class="hero-card-row"><span>KYC / AML screening</span><i class="tick"></i></div>
+      <div class="hero-card-row"><span>Eligibility assessment</span><i class="tick"></i></div>
+      <div class="hero-card-row is-final"><span>Decision &amp; confirmation email</span><i class="tick"></i></div>
+    </div>
+  </div>
+</section>
+
+<section id="process" class="section">
+  <div class="wrap">
+    <h2>How your application is processed</h2>
+    <p class="section-lede">
+      Every application runs through the same four checks, in the same order, every time. The checks
+      stop at the first one that fails — so you always know exactly which criterion decided the outcome.
+    </p>
+
+    <ol class="steps">
+      <li>
+        <span class="step-no">1</span>
+        <h3>Existing customer check</h3>
+        <p>
+          We look up your NRIC or FIN in our customer records. If you already bank with us, we will not
+          create a second record — you will be asked to visit a branch to add the new account to your
+          existing profile.
+        </p>
+      </li>
+      <li>
+        <span class="step-no">2</span>
+        <h3>Age &amp; identity</h3>
+        <p>
+          Applicants must be at least 18 years old. A junior account for anyone under 18 must be opened
+          at a branch together with a parent or legal guardian.
+        </p>
+      </li>
+      <li>
+        <span class="step-no">3</span>
+        <h3>KYC &amp; AML screening</h3>
+        <p>
+          As required under MAS Notice 626, we screen every applicant. If you are a Politically Exposed
+          Person, a tax resident outside Singapore, or your funds come from a source that requires
+          enhanced due diligence, your application is referred to our compliance team rather than
+          declined. An officer will contact you within 5 working days.
+        </p>
+      </li>
+      <li>
+        <span class="step-no">4</span>
+        <h3>Eligibility &amp; minimum deposit</h3>
+        <p>
+          We check that you meet the income, employment and minimum-deposit criteria for the specific
+          account you asked for. If you do not, we tell you which criterion was not met and suggest an
+          account that would suit you.
+        </p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="accounts" class="section section-alt">
+  <div class="wrap">
+    <h2>Account types &amp; criteria</h2>
+    <p class="section-lede">Choose the account that matches your circumstances.</p>
+
+    <div class="table-scroll">
+      <table class="criteria">
+        <thead>
+          <tr>
+            <th scope="col">Account</th>
+            <th scope="col">Who it is for</th>
+            <th scope="col">Eligibility</th>
+            <th scope="col">Minimum initial deposit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Savings</strong></td>
+            <td>Everyday saving</td>
+            <td>No income or employment requirement</td>
+            <td>SGD 500</td>
+          </tr>
+          <tr>
+            <td><strong>Joint Savings</strong></td>
+            <td>Two named holders</td>
+            <td>No income or employment requirement</td>
+            <td>SGD 1,000</td>
+          </tr>
+          <tr>
+            <td><strong>Student Account</strong></td>
+            <td>Full-time students</td>
+            <td>Employment status must be <em>Student</em></td>
+            <td>SGD 0</td>
+          </tr>
+          <tr>
+            <td><strong>Current</strong></td>
+            <td>Cheques and daily business use</td>
+            <td>Must be gainfully employed</td>
+            <td>SGD 3,000</td>
+          </tr>
+          <tr>
+            <td><strong>Fixed Deposit</strong></td>
+            <td>Locked-in savings at a fixed rate</td>
+            <td>Annual income at least SGD 30,000</td>
+            <td>SGD 10,000</td>
+          </tr>
+          <tr>
+            <td><strong>Multi-Currency</strong></td>
+            <td>Holding several currencies</td>
+            <td>Annual income at least SGD 60,000 <em>and</em> gainfully employed</td>
+            <td>SGD 5,000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="footnote">
+      <strong>Gainfully employed</strong> means an employment status of Employed, Self-Employed,
+      Contract or Part-Time.
+    </p>
+  </div>
+</section>
+
+<section id="apply" class="section">
+  <div class="wrap wrap-narrow">
+    <h2>New customer application</h2>
+    <p class="section-lede">
+      All fields marked <span class="req-star">*</span> are mandatory. Information provided is used for
+      account opening and Know-Your-Customer checks in accordance with MAS Notice 626 and the Personal
+      Data Protection Act.
+    </p>
+
+    <div class="config-panel">
+      <h4>Lab configuration</h4>
+      <label for="webhookUrl">n8n Webhook URL <span class="req-star">*</span></label>
+      <input type="url" id="webhookUrl" placeholder="https://your-n8n-host/webhook/marina-trust-onboarding">
+      <p class="config-note">
+        Paste the <strong>Production URL</strong> from your Webhook node (workflow must be <em>Active</em>),
+        or the <strong>Test URL</strong> while <em>Listen for test event</em> is armed — the test URL accepts
+        one request only. The value is remembered in this browser.
+      </p>
+      <p id="webhookStatus" class="config-status"></p>
+    </div>
+
+    <div class="demo-fill">
+      <label for="demoCase">Trainer demo data</label>
+      <select id="demoCase">
+        <option value="">— Fill the form manually —</option>
+        <option value="tc1">TC1 · Happy path (expect APPROVED)</option>
+        <option value="tc2">TC2 · Existing customer (expect DUPLICATE)</option>
+        <option value="tc3">TC3 · Income too low for Fixed Deposit (expect REJECTED)</option>
+        <option value="tc4">TC4 · Not employed, wants Current (expect REJECTED)</option>
+        <option value="tc5">TC5 · Messy casing &amp; spacing (expect APPROVED)</option>
+        <option value="tc6">TC6 · Politically Exposed Person (expect REVIEW)</option>
+        <option value="tc7">TC7 · Under 18 (expect REJECTED)</option>
+        <option value="tc8">TC8 · Deposit below minimum (expect REJECTED)</option>
+        <option value="tc9">TC9 · Foreign tax resident (expect REVIEW)</option>
+        <option value="tc10">TC10 · Under 18 and a PEP (expect REJECTED — age fires first)</option>
+      </select>
+      <p class="demo-note">Autofills the form so you can demonstrate a decision path quickly. Remember to set your own email address.</p>
+    </div>
+
+    <form id="onboardingForm" class="form" novalidate>
+
+      <fieldset>
+        <legend>Personal details</legend>
+        <div class="grid">
+          <div class="field field-wide">
+            <label for="fullName">Full name (as per NRIC / passport) <span class="req-star">*</span></label>
+            <input type="text" id="fullName" name="fullName" placeholder="TAN WEI MING" required>
+          </div>
+          <div class="field">
+            <label for="nric">NRIC / FIN <span class="req-star">*</span></label>
+            <input type="text" id="nric" name="nric" placeholder="S1234567A" required>
+          </div>
+          <div class="field">
+            <label for="dateOfBirth">Date of birth <span class="req-star">*</span></label>
+            <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+          </div>
+          <div class="field">
+            <label for="nationality">Nationality <span class="req-star">*</span></label>
+            <select id="nationality" name="nationality" required>
+              <option value="">Select…</option>
+              <option>Singaporean</option><option>Malaysian</option><option>Chinese</option>
+              <option>Indian</option><option>Indonesian</option><option>Filipino</option>
+              <option>Vietnamese</option><option>Thai</option><option>Myanmar</option>
+              <option>British</option><option>Australian</option><option>American</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="residencyStatus">Residency status <span class="req-star">*</span></label>
+            <select id="residencyStatus" name="residencyStatus" required>
+              <option value="">Select…</option>
+              <option>Singapore Citizen</option><option>Permanent Resident</option>
+              <option>Employment Pass</option><option>S Pass</option><option>Work Permit</option>
+              <option>Student Pass</option><option>Dependant Pass</option>
+              <option>Long-Term Visit Pass</option><option>Foreigner (No Pass)</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Contact details</legend>
+        <div class="grid">
+          <div class="field">
+            <label for="email">Email address <span class="req-star">*</span></label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+          </div>
+          <div class="field">
+            <label for="mobile">Mobile number <span class="req-star">*</span></label>
+            <input type="tel" id="mobile" name="mobile" placeholder="+65 9123 4567" required>
+          </div>
+          <div class="field field-wide">
+            <label for="address">Residential address <span class="req-star">*</span></label>
+            <textarea id="address" name="address" rows="2" placeholder="Block / Street / Unit" required></textarea>
+          </div>
+          <div class="field">
+            <label for="postalCode">Postal code <span class="req-star">*</span></label>
+            <input type="text" id="postalCode" name="postalCode" placeholder="189556" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Account &amp; employment</legend>
+        <div class="grid">
+          <div class="field">
+            <label for="accountType">Account type <span class="req-star">*</span></label>
+            <select id="accountType" name="accountType" required>
+              <option value="">Select…</option>
+              <option>Savings</option><option>Joint Savings</option><option>Student Account</option>
+              <option>Current</option><option>Fixed Deposit</option><option>Multi-Currency</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="employmentStatus">Employment status <span class="req-star">*</span></label>
+            <select id="employmentStatus" name="employmentStatus" required>
+              <option value="">Select…</option>
+              <option>Employed</option><option>Self-Employed</option><option>Contract</option>
+              <option>Part-Time</option><option>Student</option><option>National Service</option>
+              <option>Homemaker</option><option>Retired</option><option>Unemployed</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="occupation">Occupation / industry <span class="req-star">*</span></label>
+            <select id="occupation" name="occupation" required>
+              <option value="">Select…</option>
+              <option>Accounting &amp; Finance</option><option>Banking &amp; Insurance</option>
+              <option>Construction &amp; Real Estate</option><option>Education</option>
+              <option>Food &amp; Beverage</option><option>Government &amp; Public Service</option>
+              <option>Healthcare</option><option>Information Technology</option><option>Legal</option>
+              <option>Logistics &amp; Transport</option><option>Manufacturing</option>
+              <option>Professional Services</option><option>Retail &amp; Wholesale</option>
+              <option>Student</option><option>Not Applicable</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="employer">Employer / business name</label>
+            <input type="text" id="employer" name="employer" placeholder="Leave blank if not applicable">
+          </div>
+          <div class="field">
+            <label for="annualIncome">Annual income (SGD) <span class="req-star">*</span></label>
+            <input type="number" id="annualIncome" name="annualIncome" min="0" step="1000" placeholder="60000" required>
+          </div>
+          <div class="field">
+            <label for="initialDeposit">Initial deposit (SGD) <span class="req-star">*</span></label>
+            <input type="number" id="initialDeposit" name="initialDeposit" min="0" step="100" placeholder="1000" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Regulatory declarations</legend>
+        <div class="grid">
+          <div class="field">
+            <label for="sourceOfFunds">Source of funds <span class="req-star">*</span></label>
+            <select id="sourceOfFunds" name="sourceOfFunds" required>
+              <option value="">Select…</option>
+              <option>Salary / Employment Income</option><option>Business Income</option>
+              <option>Personal Savings</option><option>Investment Returns</option>
+              <option>Rental Income</option><option>Gift or Inheritance</option>
+              <option>Cryptocurrency Proceeds</option><option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="purposeOfAccount">Purpose of account <span class="req-star">*</span></label>
+            <select id="purposeOfAccount" name="purposeOfAccount" required>
+              <option value="">Select…</option>
+              <option>Daily Banking</option><option>Salary Crediting</option>
+              <option>Savings &amp; Investments</option><option>Business Operations</option>
+              <option>Loan Repayment</option><option>Education Expenses</option><option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="pep">Are you a Politically Exposed Person (PEP)? <span class="req-star">*</span></label>
+            <select id="pep" name="pep" required>
+              <option value="">Select…</option>
+              <option>No</option><option>Yes</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="foreignTaxResident">Are you a tax resident outside Singapore? <span class="req-star">*</span></label>
+            <select id="foreignTaxResident" name="foreignTaxResident" required>
+              <option value="">Select…</option>
+              <option>No</option><option>Yes</option>
+            </select>
+          </div>
+        </div>
+
+        <label class="check">
+          <input type="checkbox" id="declaration" name="declaration" required>
+          <span>
+            I declare that the information given is true and complete, and I consent to Marina Trust Bank
+            collecting and using my personal data in accordance with its PDPA terms. <span class="req-star">*</span>
+          </span>
+        </label>
+      </fieldset>
+
+      <div id="formError" class="form-error" role="alert" hidden></div>
+
+      <button type="submit" id="submitBtn" class="btn btn-primary btn-lg btn-block">
+        <span class="btn-label">Submit application</span>
+        <span class="spinner" hidden></span>
+      </button>
+    </form>
+
+    <!-- Decision panel, revealed once the webhook responds -->
+    <div id="result" class="result" hidden aria-live="polite">
+      <div class="result-icon" id="resultIcon"></div>
+      <h3 id="resultTitle"></h3>
+      <p id="resultReason"></p>
+      <ul class="result-flags" id="resultFlags" hidden></ul>
+      <dl class="result-meta">
+        <dt>Reference</dt><dd id="resultRef">—</dd>
+        <dt>Confirmation email</dt><dd id="resultEmail">—</dd>
+      </dl>
+      <button type="button" id="againBtn" class="btn btn-ghost">Submit another application</button>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <p><strong>Marina Trust Bank</strong> — a fictitious bank created for the NTUC LearningHub course
+      <em>Building AI Agents for Work Automation</em>. No real banking service is offered and no real
+      accounts are opened.</p>
+    <p class="footer-small">LU1 Activity 1b · Powered by an n8n AI Agent</p>
+    <p class="powered-by">Powered by <a href="https://www.tertiaryinfotech.com/" target="_blank" rel="noopener">Tertiary Infotech Academy Pte Ltd</a></p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

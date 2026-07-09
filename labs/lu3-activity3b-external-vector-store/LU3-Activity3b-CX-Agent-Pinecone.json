@@ -1,0 +1,196 @@
+{
+  "name": "LU3 Activity 3b — Cook & Bake CX Agent (Pinecone)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cookbake-course-enquiry-rag",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -720,
+        0
+      ],
+      "id": "e3000000-0001-4000-8000-000000000001",
+      "name": "Webhook",
+      "webhookId": "8c0c6a15-3665-41f0-bb60-f94e11fac572"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.chatInput }}",
+        "options": {
+          "systemMessage": "You are the friendly customer care assistant for Cook & Bake Academy, a cooking and bakery training school in Singapore.\n\n## Your knowledge source\n- You have ONE knowledge base: the `course_brochures` tool. It searches the school's 20 course brochures.\n- ALWAYS call `course_brochures` before answering ANY question about courses, fees, durations, schedules, levels, locations, instructors or enrolment.\n- Base every factual claim on what the tool returns. The brochures are the only truth you have.\n\n## When the brochures do not answer the question\n- Say so plainly: \"I don't have that in our course information.\" Then offer to connect them to the team on +65 6888 1234 or enrol@cookbakeacademy.sg.\n- NEVER invent a fee, a date, a duration, a course code, an instructor name or a discount. If a number is not in the retrieved brochure, you do not know it.\n- Do not guess at a course that sounds similar. If the customer asks about a course we do not run, tell them we do not run it, then list the two or three closest courses we do run.\n\n## How to answer\n- Warm, brief and concrete. Two to four short sentences, or a short bullet list when comparing courses.\n- Always name the course code (e.g. BAK-101) alongside the course title, so the customer can quote it.\n- Quote fees in Singapore dollars exactly as the brochure states them.\n- If the customer asks something vague (\"do you have beginner classes?\"), search, then offer two or three specific options rather than a catalogue.\n- Never mention the vector store, the retrieval tool, embeddings, or that you are an AI system searching documents. You are the course assistant."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -480,
+        0
+      ],
+      "id": "e3000000-0002-4000-8000-000000000002",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -560,
+        220
+      ],
+      "id": "e3000000-0003-4000-8000-000000000003",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "EKoniIk8TbTx3Td4",
+          "name": "Gemini API Key (n8n TMS)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "course_brochures",
+        "toolDescription": "Search the Cook & Bake Academy course brochures. Pass the course name, course code or topic (e.g. 'sourdough bread', 'sushi', 'wedding cake', 'beginner cooking'). Returns the full brochure text including course code, fee, duration, level, schedule, campus location and curriculum. Always call this before answering any question about courses.",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "course-brochures",
+          "mode": "list",
+          "cachedResultName": "course-brochures"
+        },
+        "options": {},
+        "topK": 5
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        -360,
+        220
+      ],
+      "id": "e3000000-0004-4000-8000-000000000004",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "4P7nN4UFvrslSzmo",
+          "name": "Pinecone account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-embedding-001"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "EKoniIk8TbTx3Td4",
+          "name": "Gemini API Key (n8n TMS)"
+        }
+      },
+      "id": "e3000000-0005-4000-8000-000000000005",
+      "position": [
+        -280,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"output\": $json.output } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -200,
+        0
+      ],
+      "id": "e3000000-0006-4000-8000-000000000006",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a0000003-0000-4000-8000-000000000003",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d03c6bed3240b308b4de832c94327c52a87e08eced8e5ff6ba01d3ae6a3aa507"
+  },
+  "nodeGroups": [],
+  "id": "LU3Act3bAgentPine",
+  "tags": []
+}

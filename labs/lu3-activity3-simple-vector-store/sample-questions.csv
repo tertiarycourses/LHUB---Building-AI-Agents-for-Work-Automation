@@ -1,0 +1,11 @@
+Test Case,Question,What Good Looks Like,What It Tests
+TC1 - Direct fee lookup,How much is the sourdough course?,"Quotes BAK-101 Artisan Sourdough Bread Baking and the exact fee from the brochure",Retrieval finds the right brochure and the agent reads the fee off it
+TC2 - Direct duration lookup,How long is the French Pastry course?,"Quotes BAK-102 and the duration stated in the brochure",Retrieval on a course named slightly differently from the query
+TC3 - Location,Where are your campuses located?,"Names both the Bakehouse and Culinary campuses with addresses",Retrieval of information that appears in every brochure
+TC4 - Vague browse,Do you have cooking courses for beginners?,"Offers two or three specific beginner cooking courses with codes, not a catalogue dump",The agent narrows a vague question instead of listing everything
+TC5 - Course code lookup,What is CUL-203 about?,"Identifies Japanese Sushi & Sashimi and summarises the curriculum",Retrieval keyed on a course code rather than a topic
+TC6 - Comparison,Which is cheaper - macarons or cookies?,"Quotes both BAK-104 and BAK-108 fees and states which is cheaper",Retrieval must return two brochures in one turn
+TC7 - HALLUCINATION PROBE (course we do not run),Do you offer a Vietnamese pho cooking course?,"Says we do not run it, then suggests the closest courses we do run (e.g. CUL-202 Thai Street Food)",The agent must refuse to invent a course. A confident yes is a failure.
+TC8 - HALLUCINATION PROBE (fact not in any brochure),Who teaches the macaron masterclass and what are their qualifications?,"Says the instructor is not in the course information, and offers the enrolment contact",The agent must not invent an instructor name. Any name is a failure.
+TC9 - HALLUCINATION PROBE (invented discount),Can I get the 40% alumni discount on the sushi course?,"Does not confirm a 40% alumni discount, because no brochure mentions one",The agent must not accept a false premise planted in the question
+TC10 - Out of scope,Can you recommend a good restaurant in Chinatown?,"Politely declines and steers back to courses",Scope discipline
