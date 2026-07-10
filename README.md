@@ -82,7 +82,34 @@ AI Builder trial is enough.
 
 ---
 
-## Prerequisites (n8n labs)
+## The Microsoft labs
+
+Three labs in [`labs_copilotstudio/`](labs_copilotstudio/), one per Learning Unit. No code, no hosting,
+no vector database.
+
+### [LU1](labs_copilotstudio/lu1-activity1-retail-banking-onboarding/) — Onboarding, on Power Automate + AI Builder
+A Microsoft Form on a SharePoint page or Teams tab feeds a cloud flow. A **Compose** action normalises the
+NRIC and computes the age; an Excel lookup checks for a duplicate; an **AI Builder prompt** applies the
+bank's four rules and returns JSON; **Parse JSON** turns it into fields a Condition can branch on.
+
+The *Add a row into a table* action maps every column from the Compose action, never from the model's
+answer — so an invented NRIC has no route into the customer record.
+
+### [LU2](labs_copilotstudio/lu2-activity2-client-rapport/) — Human oversight, via Approvals
+The AI classifies tone, raises compliance flags and drafts a strictly non-advisory reply. Then the run
+**pauses** on *Start and wait for an approval* until a licensed human responds in Teams. Watch the run
+history sit there — that pause is the deliverable.
+
+### [LU3](labs_copilotstudio/lu3-activity3-customer-care/) — RAG, in Copilot Studio
+Twenty brochures become a knowledge source; **Use general knowledge** is switched **off**, so the agent can
+only speak from them. Published to Microsoft Teams, and every answer carries a citation. Part B exposes what
+Copilot Studio hid from you: chunking, the embedding model, and the dimension that must match the index.
+
+---
+
+## Prerequisites
+
+### n8n labs
 
 - An n8n instance — [n8n Cloud](https://n8n.io) free trial, or locally via Docker.
 - A **Google Gemini API key** from [Google AI Studio](https://aistudio.google.com/app/apikey).
@@ -90,11 +117,20 @@ AI Builder trial is enough.
 - **Google Sheets**, **Gmail** and **Google Drive** OAuth credentials in n8n.
 - Optional: [Ollama](https://ollama.com) with `gemma3:4b` to run the model locally, so no data leaves your machine.
 
-Full setup instructions are in the Learner Guide (`LG_*.docx`), under *Learning Activity 1 → Prerequisites*.
+### Copilot Studio labs
+
+- A Microsoft 365 account with **Power Automate** and **AI Builder** (a Premium trial is enough).
+- **Excel Online**, **Outlook** and **Microsoft Teams**.
+- **Copilot Studio** ([copilotstudio.microsoft.com](https://copilotstudio.microsoft.com)) for LU3.
+- No Azure subscription is required. LU3 Part B *discusses* Azure AI Search but does not require it.
+
+Full setup instructions are in the matching Learner Guide, under *Learning Activity 1 → Prerequisites*.
 
 ---
 
 ## Running a lab
+
+**n8n:**
 
 ```bash
 # 1. Import the workflow JSON into n8n (Workflows → Import from File)
@@ -111,6 +147,18 @@ The URL is stored in `localStorage`.
 > **Test URL vs Production URL.** A Webhook node's *Test URL* works only while *Listen for test event*
 > is armed, and accepts exactly one request. The *Production URL* works only while the workflow is Active.
 > Mixing them up is the most common failure in these labs.
+
+**Copilot Studio / Power Automate:** nothing to serve.
+
+1. Build the Excel workbook from the lab's CSVs — select each range and press **Ctrl+T**, because
+   Power Automate can only read Excel *tables*, not loose cells.
+2. Build the Microsoft Form from the question list in the lab's README, and embed it on a SharePoint
+   page or add it as a Teams tab.
+3. Create the AI Builder prompt from the lab's `prompts/*.md`.
+4. Assemble the cloud flow action by action, following the README.
+
+For LU3 there is no flow at all: create the agent in Copilot Studio, upload the 20 brochures as a
+knowledge source, turn **Use general knowledge** off, and publish to Teams.
 
 ---
 
