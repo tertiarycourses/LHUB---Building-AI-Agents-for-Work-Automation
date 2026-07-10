@@ -45,3 +45,7 @@ venv/
 
 # Node
 node_modules/
+
+# Local scratch: source material and archives, not part of the courseware
+labs.zip
+n8n-investmentadvisor/

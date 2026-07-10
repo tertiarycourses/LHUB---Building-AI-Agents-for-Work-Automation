@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Investment Advisor | Free Wealth Strategy Consultation</title>
+    <meta
+      name="description"
+      content="Book a free investment strategy consultation and download a practical guide to smarter long-term wealth planning."
+    />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Investment Advisor home">
+        <span class="brand-mark">IA</span>
+        <span>Investment Advisor</span>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="#why">Why Us</a>
+        <a href="#guide">Free Guide</a>
+        <a href="#lab-config">Consultation</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-content">
+          <p class="eyebrow">Personal wealth planning for professionals</p>
+          <h1>Plan Your Wealth with Confidence</h1>
+          <p class="hero-copy">
+            Get a free investment strategy consultation and discover how to
+            grow, protect, and manage your wealth with a personalised advisory
+            approach.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#lab-config">Get Free Consultation</a>
+            <a class="button secondary" href="#guide">Download Free Guide</a>
+          </div>
+          <div class="trust-strip" aria-label="Trust indicators">
+            <span>Risk-aware planning</span>
+            <span>Long-term portfolios</span>
+            <span>Clear advisor guidance</span>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="Advisory highlights">
+          <div class="metric">
+            <strong>3-step</strong>
+            <span>consultation process</span>
+          </div>
+          <div class="metric">
+            <strong>360</strong>
+            <span>wealth view</span>
+          </div>
+          <div class="hero-note">
+            <span class="status-dot"></span>
+            Free initial portfolio and goal discussion available this week.
+          </div>
+        </aside>
+      </section>
+
+      <section class="section" id="why">
+        <div class="section-heading">
+          <p class="eyebrow">Why work with us</p>
+          <h2>Advisory support built around your goals, risk profile, and time horizon.</h2>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <span class="feature-icon">01</span>
+            <h3>Personalised Strategy</h3>
+            <p>
+              Align your investment decisions with your income, lifestyle,
+              retirement targets, and family priorities.
+            </p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon">02</span>
+            <h3>Risk Clarity</h3>
+            <p>
+              Understand portfolio risk, diversification, market cycles, and
+              how each choice supports your long-term plan.
+            </p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon">03</span>
+            <h3>Disciplined Reviews</h3>
+            <p>
+              Build a review rhythm that keeps your plan current as markets,
+              income, and life stages change.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="guide-section" id="guide">
+        <div class="guide-content">
+          <p class="eyebrow">Free investment guide</p>
+          <h2>5 Investment Mistakes Professionals Should Avoid</h2>
+          <p>
+            A practical guide to help you make calmer, better-informed
+            decisions before your next advisor conversation.
+          </p>
+        </div>
+        <div class="guide-card">
+          <ul>
+            <li>Learn how to avoid poor investment decisions</li>
+            <li>Understand risk and portfolio diversification</li>
+            <li>Discover long-term wealth planning strategies</li>
+            <li>Get practical tips before speaking to an advisor</li>
+          </ul>
+          <a class="button primary" href="#lab-config">Ask the Advisor Assistant</a>
+        </div>
+            <section class="lab-section" id="lab-config">
+        <div class="form-copy">
+          <p class="eyebrow">Lab configuration</p>
+          <h2>Point the chatbot at your own workflow.</h2>
+          <p>
+            This panel exists only for the lab. A real advisory website would not show it.
+          </p>
+        </div>
+
+        <div class="config-panel">
+          <label for="webhookUrl">Webhook URL</label>
+          <input
+            id="webhookUrl"
+            type="url"
+            placeholder="https://your-host/webhook/investment-advisor-chat"
+          />
+          <p class="config-note">
+            Copy the <strong>Production URL</strong> from the Chat Webhook node. The workflow must be
+            <strong>Active</strong>. While building, you may use the <strong>Test URL</strong> with
+            <em>Listen for test event</em> armed &mdash; it accepts one message only.
+            The value is saved in this browser.
+          </p>
+          <p class="config-status" id="webhookStatus"></p>
+        </div>
+      </section>
+
+</section>
+
+    </main>
+
+    <footer class="footer">
+      <p>Investment Advisor</p>
+      <p>
+        General information only. Speak with a licensed advisor before making
+        investment decisions.
+      </p>
+      <p class="powered-by">
+        Powered by
+        <a href="https://www.tertiaryinfotech.com/" target="_blank" rel="noopener">
+          Tertiary Infotech Academy Pte Ltd.
+        </a>
+      </p>
+    </footer>
+
+    <section class="chat-widget" aria-label="Investment advisor chatbot">
+      <button class="chat-toggle" id="chatToggle" aria-expanded="false" aria-controls="chatWindow">
+        <span class="chat-toggle-icon">Chat</span>
+        <span>Ask Advisor</span>
+      </button>
+      <div class="chat-window" id="chatWindow" hidden>
+        <div class="chat-header">
+          <div>
+            <h2>Advisor Assistant</h2>
+            <p>General investment questions</p>
+          </div>
+          <button class="chat-close" id="chatClose" aria-label="Close chat">x</button>
+        </div>
+        <div class="chat-history" id="chatHistory" aria-live="polite">
+          <div class="chat-message bot">
+            Hello. Before I answer your investment questions, please share your
+            full name so an advisor can get back to you if needed.
+          </div>
+        </div>
+        <div class="chat-suggestions" id="chatSuggestions" hidden>
+          <p class="chat-suggestions-label">Try asking</p>
+          <button type="button" class="chip">What can an investment advisor help with?</button>
+          <button type="button" class="chip">Is the consultation free?</button>
+          <button type="button" class="chip">Can you guarantee returns?</button>
+          <button type="button" class="chip">Which stock should I buy?</button>
+          <button type="button" class="chip">How does diversification help?</button>
+          <button type="button" class="chip">What should I prepare before speaking with an advisor?</button>
+        </div>
+        <form class="chat-form" id="chatForm">
+          <input
+            id="chatInput"
+            type="text"
+            placeholder="Enter your full name..."
+            autocomplete="off"
+            required
+          />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </section>
+
+    <script src="script.js"></script>
+  </body>
+</html>

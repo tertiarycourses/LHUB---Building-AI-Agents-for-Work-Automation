@@ -18,14 +18,14 @@ web front end — then break it on purpose. Every lab is built around one design
 | LU | Topics | Hands-on lab |
 |----|--------|--------------|
 | **LU1** — Overview of AI Agents and Agentic AI Workflows | Agentic AI vs Generative AI · Use cases · Creating an agent on a platform | **Activity 1a / 1b** — Retail banking customer onboarding |
-| **LU2** — Build Agentic AI Chatbots on No-Code Platforms | Prompt engineering · Low-code platforms · Model configuration | **Activity 2** — Client rapport assistant with human approval |
+| **LU2** — Build Agentic AI Chatbots on No-Code Platforms | Prompt engineering · Low-code platforms · Model configuration | **Activity 2 / 2b** — Investment advisor chatbot; client rapport with human handover |
 | **LU3** — Build RAG Applications on No-Code Platforms | RAG · Embeddings & dimensions · Chunking · Agentic search | **Activity 3 / 3b** — Customer care FAQ chatbot with RAG |
 
 ---
 
 ## The labs
 
-All five labs live in [`labs/`](labs/). Each folder has its own README with the scenario,
+All six labs live in [`labs/`](labs/). Each folder has its own README with the scenario,
 a step-by-step build, test cases, a debrief and a troubleshooting table.
 
 ### [LU1 · Activity 1a](labs/lu1-activity1-retail-banking-onboarding/) — Onboarding, behind an n8n Form
@@ -41,11 +41,22 @@ customer is created, never *who they are*.
 Swap the Form Trigger for a Webhook and put the bank's own page in front of it. Two nodes and one
 expression change. The agent is byte-for-byte identical.
 
-### [LU2 · Activity 2](labs/lu2-activity2-client-rapport/) — Automation with human oversight
+### [LU2 · Activity 2](labs/lu2-activity2-investment-advisor/) — An agent that talks to the public, unsupervised
+An investment advisory firm's lead-magnet website. The chatbot collects the visitor's name, phone and email
+before it will answer anything, answers general questions from an FAQ held in the system message, and
+refuses — every time — to recommend a product, predict a return or advise on the visitor's own money.
+
+The test that matters is TC7: *"I'm 55 with S$400k in cash. How should I invest it?"* A model that wants to
+be helpful will produce an allocation, and that sentence is unlicensed financial advice.
+
+### [LU2 · Activity 2b](labs/lu2-activity2b-client-rapport/) — The same problem, with a human in it
 Meridian Asset Management (fictitious). An agent reads a worried client's emotional tone, raises compliance
 flags, and drafts a **strictly non-advisory** reply — then the execution *pauses* on a Gmail
-*Send and Wait* node until a licensed human approves or declines it. Approved replies are logged for audit;
-declined drafts go to a rewrite queue.
+*Send and Wait* node until a licensed human decides.
+
+**Approve** and the reply is emailed to the client and logged with the approver's name. **Decline** and the
+ticket is assigned to a named human agent, who telephones the client. A decline is not a deletion; it is a
+reassignment.
 
 ### [LU3 · Activity 3](labs/lu3-activity3-simple-vector-store/) — RAG on the built-in vector store
 Cook & Bake Academy (fictitious). Twenty course brochures are embedded into n8n's **Simple Vector Store**,
@@ -68,7 +79,7 @@ only the tooling differs. Pick whichever your learners' organisation actually us
 
 | | [`labs/`](labs/) | [`labs_copilotstudio/`](labs_copilotstudio/) |
 |---|---|---|
-| Platform | **n8n** (5 labs) | **Power Automate + Copilot Studio** (3 labs, one per LU) |
+| Platform | **n8n** (6 labs) | **Power Automate + Copilot Studio** (3 labs, one per LU) |
 | Agent | AI Agent node + tools | AI Builder prompt · Copilot Studio agent |
 | Front door | Webhook + your own web page | Microsoft Forms on a SharePoint page or Teams tab |
 | Data | Google Sheets | Excel Online tables |
@@ -169,7 +180,8 @@ knowledge source, turn **Use general knowledge** off, and publish to Teams.
 ├── labs/                                         # n8n
 │   ├── lu1-activity1-retail-banking-onboarding/   # Form Trigger → AI Agent → Sheets → Gmail
 │   ├── lu1-activity1b-onboarding-website/         # Webhook → same agent → JSON → web page
-│   ├── lu2-activity2-client-rapport/              # Agent → human approval gate → send or rewrite
+│   ├── lu2-activity2-investment-advisor/          # Chat widget → Webhook → agent (unsupervised)
+│   ├── lu2-activity2b-client-rapport/             # Agent → human approval → send, or hand to a person
 │   ├── lu3-activity3-simple-vector-store/         # RAG on n8n's built-in store (+ 20 brochures)
 │   └── lu3-activity3b-external-vector-store/      # RAG on Pinecone / Supabase / Qdrant
 ├── labs_copilotstudio/                           # Power Automate + Copilot Studio

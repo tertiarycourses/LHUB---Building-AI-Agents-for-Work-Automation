@@ -1,0 +1,214 @@
+{
+  "name": "LU2 Activity 2 — Investment Advisor Chatbot",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "investment-advisor-chat",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -820,
+        0
+      ],
+      "id": "aa100000-0001-4000-8000-000000000001",
+      "name": "Chat Webhook",
+      "webhookId": "12663502-ff47-45b6-9a8f-c67c083603d9"
+    },
+    {
+      "parameters": {
+        "jsCode": "// The chat widget posts JSON. Pull out the fields, and give the\n// conversation a stable session id so the memory node can find it.\nconst body = $json.body || $json;\nreturn [{\n  json: {\n    message: (body.message || '').toString().trim(),\n    name: (body.name || '').toString().trim(),\n    phone: (body.phone || body.tel || '').toString().trim(),\n    email: (body.email || '').toString().trim().toLowerCase(),\n    sessionId: body.sessionId || 'web-anonymous',\n    source: body.source || 'investment-advisor-website'\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -600,
+        0
+      ],
+      "id": "aa100000-0002-4000-8000-000000000002",
+      "name": "Normalize Chat Message"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ ['Visitor contact details:', 'Name: ' + ($json.name || '(not given)'), 'Telephone: ' + ($json.phone || '(not given)'), 'Email: ' + ($json.email || '(not given)'), '', 'Visitor question:', $json.message || ''].join('\\n') }}",
+        "options": {
+          "systemMessage": "You are the Advisor Assistant for a Singapore investment advisory firm's website. You answer general investment-planning questions from visitors, and you help them decide whether to book a consultation with a licensed advisor.\n\n## Collect contact details first\nBefore answering any investment question, make sure the visitor has given their full name, telephone number and email address, so a licensed advisor can follow up. If any of the three is missing, ask politely for the missing one and nothing else. Do not answer the investment question until you have all three.\n\n## THE NON-ADVISORY RULE — this is the rule that matters\nYou are not licensed to give financial advice. You must NEVER:\n- recommend a specific stock, fund, bond, insurance policy or product;\n- tell the visitor to buy, sell, hold, switch or redeem anything;\n- predict or estimate a future return, price or market direction;\n- guarantee or imply an outcome (\"markets always recover\", \"you cannot lose\");\n- comment on whether now is a good or bad time to invest;\n- give personalised advice based on the visitor's own circumstances;\n- state a fee, rate or figure that is not in the FAQ below.\n\nYou MAY: explain a financial-planning concept in general terms, describe what a consultation covers, say what the visitor should prepare, and invite them to book a free consultation with a licensed advisor.\n\n**When in doubt, say less and offer the consultation.**\n\n## How to answer\n- Warm, brief, concrete. Two to four short sentences.\n- Answer from the FAQ below wherever it applies. If the FAQ does not cover the question, answer in general educational terms, or say you cannot help with that and offer the consultation.\n- Close by reminding the visitor to speak with a licensed advisor before making any investment decision.\n- Never mention that you are an AI, or that you are reading an FAQ.\n\n## FAQ\nQ: What can an investment advisor help with?\nA: Goal setting, risk profiling, portfolio review, diversification, retirement planning, education planning, and long-term wealth planning.\n\nQ: Is the consultation free?\nA: Yes. The initial consultation is free, and it helps clarify goals, time horizon, risk comfort and next steps.\n\nQ: Can you guarantee returns?\nA: No. Investments carry risk and returns are never guaranteed.\n\nQ: Can you tell me which stock to buy?\nA: No. This assistant cannot give stock tips or personalised recommendations. A licensed advisor can review your situation in a consultation.\n\nQ: What should I prepare before speaking with an advisor?\nA: Your current holdings, monthly savings capacity, goals, time horizon, risk comfort, debts, insurance cover and any major financial commitments.\n\nQ: How does diversification help?\nA: Diversification spreads exposure across assets or sectors and can reduce concentration risk. It does not remove investment risk.\n\nQ: What is long-term investing?\nA: Disciplined planning over several years, with regular reviews and alignment to your goals, rather than short-term market timing.\n\nQ: How much do I need to start investing?\nA: There is no single answer. A consultation looks at your savings capacity and goals before discussing what is realistic for you.\n\nQ: What is risk profiling?\nA: A structured way of understanding how much loss you can tolerate financially and emotionally, so a plan can be built around it.\n\nQ: How often should I review my portfolio?\nA: Many investors review at least annually, or when their circumstances change materially. Your advisor will suggest a cadence."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -380,
+        0
+      ],
+      "id": "aa100000-0003-4000-8000-000000000003",
+      "name": "Investment Advisor AI"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -440,
+        230
+      ],
+      "id": "aa100000-0004-4000-8000-000000000004",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "EKoniIk8TbTx3Td4",
+          "name": "Gemini API Key (n8n TMS)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Normalize Chat Message').item.json.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -260,
+        230
+      ],
+      "id": "aa100000-0005-4000-8000-000000000005",
+      "name": "Website Chat Memory"
+    },
+    {
+      "parameters": {
+        "jsCode": "// The widget expects { reply: \"...\" }. Never return the raw agent object.\nconst reply = $json.output || $json.text || $json.reply\n  || 'Thank you. A licensed advisor will get back to you shortly.';\nreturn [{ json: { reply } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        0
+      ],
+      "id": "aa100000-0006-4000-8000-000000000006",
+      "name": "Chat Response Body"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        60,
+        0
+      ],
+      "id": "aa100000-0007-4000-8000-000000000007",
+      "name": "Respond to Chat"
+    },
+    {
+      "parameters": {
+        "content": "## LU2 Activity 2 — Investment Advisor Chatbot\n\nOne webhook, one agent, one reply. There is no enquiry form and no email node.\n\n**Before you run it:**\n1. Select your Gemini credential on the chat model.\n2. **Activate** the workflow, then copy the Webhook **Production URL**.\n3. Paste that URL into the website's *Lab configuration* panel.\n\n**Memory** is keyed on `sessionId`, which the browser generates once per visit. Two visitors never see each other's conversation.\n\nThe agent must collect name, phone and email **before** it answers anything.",
+        "height": 380,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -820,
+        230
+      ],
+      "id": "aa100000-0008-4000-8000-000000000008",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Chat Webhook": {
+      "main": [
+        [
+          {
+            "node": "Normalize Chat Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Chat Message": {
+      "main": [
+        [
+          {
+            "node": "Investment Advisor AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Investment Advisor AI": {
+      "main": [
+        [
+          {
+            "node": "Chat Response Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Response Body": {
+      "main": [
+        [
+          {
+            "node": "Respond to Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Investment Advisor AI",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Website Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Investment Advisor AI",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e1f2a3b4-5c6d-4e7f-8091-a2b3c4d5e6f7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d03c6bed3240b308b4de832c94327c52a87e08eced8e5ff6ba01d3ae6a3aa507"
+  },
+  "nodeGroups": [],
+  "id": "LU2Activity2Advisor",
+  "tags": []
+}
