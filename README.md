@@ -188,13 +188,26 @@ knowledge source, turn **Use general knowledge** off, and publish to Teams.
 │   ├── lu1-activity1-retail-banking-onboarding/   # Forms → AI Builder → Excel → Outlook
 │   ├── lu2-activity2-client-rapport/              # AI Builder → Approvals in Teams → send or rewrite
 │   └── lu3-activity3-customer-care/               # Copilot Studio agent grounded in 20 brochures
-├── Building AI Agents for Work Automation (SF).pptx        # Trainer slide deck (platform-neutral)
-├── LG_..._SF_n8n.docx / LG_..._SF_copilotstudio.docx        # Learner Guide, one per platform
-└── TG_Building_AI_Agents_for_Work_Automation_SF.docx       # Trainer Guide
+├── courseware_n8n/                               # Full document set — n8n
+│   ├── Building AI Agents for Work Automation (SF).pptx     # Trainer slide deck
+│   ├── LG_..._SF_n8n.docx                                   # Learner Guide (n8n)
+│   ├── TG_..._SF.docx                                       # Trainer Guide / lesson plan
+│   └── CO_....docx                                          # Course Outline
+└── courseware_copilotstudio/                     # Full document set — Copilot Studio
+    ├── Building AI Agents for Work Automation (SF).pptx     # Trainer slide deck
+    ├── LG_..._SF_copilotstudio.docx                         # Learner Guide (Copilot Studio)
+    ├── TG_..._SF.docx                                       # Trainer Guide / lesson plan
+    └── CO_....docx                                          # Course Outline
 ```
 
-**Not in this repository, by design:** the Assessment Plan and its answer keys (confidential WSQ
-assessment material), `.env` (live API keys), and local reference copies of other courses' courseware.
+Each `courseware_*` folder is a **complete, self-contained set** for one platform. The slide deck,
+Trainer Guide, Course Outline and Competency Profile are platform-neutral and are therefore *the same
+file in both folders* — edit one and copy it across, or they will drift.
+
+**Not in this repository, by design:** the Assessment Plan (`AP_*.docx`) and the Competency Profile
+(`CP_*.xlsx`) — confidential WSQ assessment material, present in both `courseware_*` folders locally
+but gitignored — along with `.env` (live API keys) and local reference copies of other courses'
+courseware.
 
 ---
 
